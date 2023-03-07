@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/content/earth-forecasting-transformer/src')
+
 import os
 import argparse
 from shutil import copyfile
