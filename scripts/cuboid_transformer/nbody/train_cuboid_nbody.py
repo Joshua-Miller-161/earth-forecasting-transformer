@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/content/earth-forecasting-transformer/src')
+
 import warnings
 from shutil import copyfile
 import inspect
