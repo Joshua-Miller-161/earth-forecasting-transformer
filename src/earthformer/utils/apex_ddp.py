@@ -8,18 +8,41 @@ from pytorch_lightning.overrides.base import (
     _LightningPrecisionModuleWrapperBase,
 )
 
+'''
 def unwrap_lightning_module(wrapped_model):
     model = wrapped_model
+    
+    print("Type :", type(model), ", hasattr(model, 'module') =", hasattr(model, 'module'), ", attribs :", dir(model))
+    
     if isinstance(model, DistributedDataParallel):
+      if (hasattr(model, 'module')): # Check if model has 'module' attribute
         model = unwrap_lightning_module(model.module)
     if isinstance(
-        model, (_LightningModuleWrapperBase, _LightningPrecisionModuleWrapperBase)
+      model, (_LightningModuleWrapperBase, _LightningPrecisionModuleWrapperBase)
     ):
+      if (hasattr(model, 'module')): # Check if model has 'module' attribute
         model = unwrap_lightning_module(model.module)
+    return model
+'''
+
+
+def unwrap_lightning_module(wrapped_model):
+    model = wrapped_model
+    
+    print("Type :", type(model), ", hasattr(model, 'module') =", hasattr(model, 'module'), ", attribs :", dir(model))
+    
+    if isinstance(model, DistributedDataParallel):
+      if (hasattr(model, 'module')): # Check if model has 'module' attribute
+        model = unwrap_lightning_module(model.module)
+
+    if isinstance(model, (_LightningModuleWrapperBase, _LightningPrecisionModuleWrapperBase)):
+      if (hasattr(model, 'module')): # Check if model has 'module' attribute
+        model = unwrap_lightning_module(model.module)
+    
     return model
 
 
-class DDPStrategy(DDPStrategy): #####ApexDDPStrategy
+class TorchDDPStrategy(DDPStrategy): #####ApexDDPStrategy
     def _setup_model(self, model):
         return DistributedDataParallel(model, delay_allreduce=False) #####apex.parallel.DistributedDataParallel
 
