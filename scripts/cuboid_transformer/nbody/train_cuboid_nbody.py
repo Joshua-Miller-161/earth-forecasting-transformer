@@ -429,8 +429,11 @@ class CuboidNBodyPLModule(pl.LightningModule):
             default_root_dir=self.save_dir,
             # ddp
             accelerator="gpu",
+            
+            ''' If strategy is commented out it seems to work '''
             # strategy="ddp",
-            strategy=DDPStrategy(find_unused_parameters=False, delay_allreduce=True), #########ApexDDPStrategy(find_unused_parameters=False, delay_allreduce=True),
+            # strategy=DDPStrategy(find_unused_parameters=False, delay_allreduce=True), #########ApexDDPStrategy(find_unused_parameters=False, delay_allreduce=True),
+            
             # optimization
             max_epochs=self.oc.optim.max_epochs,
             check_val_every_n_epoch=self.oc.trainer.check_val_every_n_epoch,
